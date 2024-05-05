@@ -1,0 +1,24 @@
+{
+  "name": "webpack-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chopsqd/webpack-practice.git"
+  },
+  "keywords": [],
+  "author": "Chopsqd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chopsqd/webpack-practice/issues"
+  },
+  "homepage": "https://github.com/chopsqd/webpack-practice#readme",
+  "devDependencies": {
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
