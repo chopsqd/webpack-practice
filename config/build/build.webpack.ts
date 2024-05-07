@@ -31,7 +31,7 @@ export function buildWebpack(options: IWebpackOptions): webpack.Configuration {
         resolve: buildResolvers(options),
         // Карта исходного кода
         // помогает понять в каком исходном виде был написан код
-        devtool: isDev && 'inline-source-map',
+        devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
         devServer: buildDevServer(options)
     }
 }

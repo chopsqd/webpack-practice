@@ -2,9 +2,10 @@ import {ModuleOptions} from "webpack";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import {IWebpackOptions} from "./types/webpack.types";
 import ReactRefreshTypeScript from "react-refresh-typescript";
+import {babelBuildLoader} from "./babel/babel.build-loader";
 
-export function buildLoaders({mode}: IWebpackOptions): ModuleOptions['rules'] {
-    const isDev = mode === 'development'
+export function buildLoaders(options: IWebpackOptions): ModuleOptions['rules'] {
+    const isDev = options.mode === 'development'
 
     const assetLoader = {
         test: /\.(png|jpg|jpeg|gif)$/i,
@@ -75,9 +76,11 @@ export function buildLoaders({mode}: IWebpackOptions): ModuleOptions['rules'] {
                 }
             }
         ],
-        // Не обрабатывай
+        // Не обрабатывать
         exclude: /node_modules/,
     }
+
+    const babelLoader = babelBuildLoader(options)
 
     // Указываем лоадеры, через которые прогоняется код
     // Порядок имеет значение
@@ -85,7 +88,8 @@ export function buildLoaders({mode}: IWebpackOptions): ModuleOptions['rules'] {
     return [
         assetLoader,
         scssLoader,
-        tsLoader,
+        // tsLoader,
+        babelLoader,
         svgrLoader
     ]
 }
