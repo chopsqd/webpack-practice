@@ -9,6 +9,8 @@ export function buildDevServer({port}: IWebpackOptions): DevServerConfiguration 
         open: true,
         // Для работы роутинга
         // Если раздавать статику через nginx, то надо делать проксирование на Index.html
-        historyApiFallback: true
+        historyApiFallback: true,
+        // Обновление кода без перезагрузки страницы (HMR)
+        hot: true
     }
 }
