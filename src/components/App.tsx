@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import './App.scss'
+import styles from './App.module.scss'
+import {Link, Outlet} from "react-router-dom";
 
 export const App = () => {
     const [count, setCount] = useState<number>(0)
@@ -9,9 +10,14 @@ export const App = () => {
 
     return (
         <div>
-            <button onClick={increment}>+</button>
-            <h1>{count}</h1>
+            <Link to={'/about'}>About</Link>
+            <Link to={'/shop'}>Shop</Link>
+
+            <button className={styles.button} onClick={increment}>+</button>
+            <h1 className={styles.value}>{count}</h1>
             <button onClick={decrement}>-</button>
+
+            <Outlet/>
         </div>
     );
 };
