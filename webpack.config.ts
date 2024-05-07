@@ -1,7 +1,8 @@
 import path from "path";
 import webpack from "webpack";
-import HTMLWebpackPlugin from "html-webpack-plugin";
 import type { Configuration as DevServerConfiguration } from "webpack-dev-server"
+import HTMLWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 type ModeType = 'development' | 'production'
 
@@ -17,7 +18,7 @@ export default (env: IEnvVariables) => {
         // Формат сборки - development/production
         mode: env.mode ?? 'development',
         // Точка входа в приложение
-        entry: path.resolve(__dirname, 'src', 'index.ts'),
+        entry: path.resolve(__dirname, 'src', 'index.tsx'),
         // Куда и как происходит сборка
         output: {
             // Куда
@@ -32,13 +33,34 @@ export default (env: IEnvVariables) => {
         // .filter(Boolean) -> чтобы нормально работало isDev && ...
         plugins: [
             // Сборка html по указанному шаблону
-            new HTMLWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html') }),
+            new HTMLWebpackPlugin({
+                template: path.resolve(__dirname, 'public', 'index.html')
+            }),
             // Отображение прогресс бара
-            isDev && new webpack.ProgressPlugin()
+            isDev && new webpack.ProgressPlugin(),
+            // Минификация css файлов
+            !isDev && new MiniCssExtractPlugin({
+                // Сохранение основного файла
+                filename: 'css/[name].[contenthash:8].css',
+                // Сохранение чанков
+                chunkFilename: 'css/[name].[contenthash:8].css'
+            })
         ].filter(Boolean),
         module: {
             // Указываем лоадеры, через которые прогоняется код
+            // Порядок имеет значение
             rules: [
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        // Создает 'style' из JS строк
+                        isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        // Перевод CSS в CommonJS
+                        'css-loader',
+                        // Компиляция Sass в CSS
+                        'sass-loader'
+                    ]
+                },
                 {
                     // Название (чаще расширение) файлов для обработки
                     test: /\.tsx?$/,
